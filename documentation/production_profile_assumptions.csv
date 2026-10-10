@@ -1,0 +1,12 @@
+﻿Assumption_ID,Development_Concept,Parameter,Value,Unit,Description,Assumption_Type
+P001,Subsea_Tieback,First_Oil_Year,3,project_year,First year of commercial production,Proposed_Illustrative
+P002,Standalone_FPSO,First_Oil_Year,4,project_year,First year of commercial production,Proposed_Illustrative
+P003,Subsea_Tieback,Maximum_Production_Capacity,60000,bbl_per_day,Maximum modeled daily production capacity,Proposed_Illustrative
+P004,Standalone_FPSO,Maximum_Production_Capacity,100000,bbl_per_day,Maximum modeled daily production capacity,Proposed_Illustrative
+P005,Shared,Initial_Ramp_Factor,0.60,decimal,Production factor in the first production year,Proposed_Illustrative
+P006,Shared,Second_Year_Ramp_Factor,0.85,decimal,Production factor in the second production year,Proposed_Illustrative
+P007,Shared,Plateau_Factor,1.00,decimal,Production factor at plateau,Proposed_Illustrative
+P008,Shared,Plateau_Duration,5,producing_years,Number of full-capacity plateau years,Proposed_Illustrative
+P009,Shared,Annual_Decline_Rate,0.08,decimal,Annual decline after the plateau period,Proposed_Illustrative
+P010,Shared,Uptime_Factor,0.90,decimal,Annual production availability factor,Proposed_Illustrative
+P011,Shared,Annual_Days,365,days,Annual production-day convention,Model_Convention

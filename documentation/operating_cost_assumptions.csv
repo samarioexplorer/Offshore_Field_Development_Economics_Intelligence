@@ -1,0 +1,9 @@
+﻿Cost_ID,Development_Concept,Cost_Component,Value,Unit,Application,Assumption_Type
+O001,Subsea_Tieback,Fixed_OPEX,35000000,USD_per_producing_year,Producing years only,Proposed_Illustrative
+O002,Subsea_Tieback,Variable_OPEX,8,USD_per_bbl,Annual oil production multiplied by rate,Proposed_Illustrative
+O003,Subsea_Tieback,Host_Tariff,12,USD_per_bbl,Annual oil production multiplied by tariff rate,Proposed_Illustrative
+O004,Subsea_Tieback,Abandonment,150000000,USD,Project Year 25,Proposed_Illustrative
+O005,Standalone_FPSO,Fixed_OPEX,120000000,USD_per_producing_year,Producing years only,Proposed_Illustrative
+O006,Standalone_FPSO,Variable_OPEX,6,USD_per_bbl,Annual oil production multiplied by rate,Proposed_Illustrative
+O007,Standalone_FPSO,Host_Tariff,0,USD_per_bbl,Not applicable in the initial standalone concept,Proposed_Illustrative
+O008,Standalone_FPSO,Abandonment,350000000,USD,Project Year 25,Proposed_Illustrative
