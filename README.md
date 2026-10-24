@@ -1,4 +1,3 @@
-﻿
 # Offshore Field Development & Economics Intelligence
 
 ## 1. Project Overview
@@ -344,7 +343,13 @@ The workflow has included checks covering:
 
 Recorded project validation history includes **205 passing checks: 190 core-model checks and 15 SQL-view QA checks**.
 
-This is a record of the project's validation runs, not a claim that every possible input, edge case, visual interaction, or future modification has been tested. Changes to calculations, database objects, or report measures should be followed by appropriate regression checks.
+Following implementation of the reproducible pipeline, an additional end-to-end run successfully completed all 14 pipeline steps. The run included assumption validation, production-profile generation and validation, annual economic modeling and validation, investment-metric calculation and validation, oil-price scenario generation and validation, scenario IRR diagnostics, SQLite database construction, SQL analytical-view creation, SQL-view validation, and SQL reconciliation.
+
+A baseline reproducibility comparison was also completed against the saved reference artifacts. All nine compared artifacts were byte-for-byte identical, including the seven generated CSV files, the SQL analytical-view definition file, and the SQLite database. Independent parsed-value comparisons also passed for all seven CSV files.
+
+The pipeline's failure-handling behavior was tested by substituting a deliberately nonexistent first step in memory. The actual orchestrator detected the missing script, returned failure code `1`, reported zero completed steps, and stopped without attempting the next step. No production pipeline scripts were executed during this failure-handling test.
+
+These results document the tested project state and execution environment. They do not establish that every possible input, edge case, visual interaction, or future modification has been tested. Changes to calculations, database objects, or report measures should be followed by appropriate regression checks.
 
 The SQL scenario NPV comparison view has also been inspected directly. Its expected output columns were confirmed, and a query returned the two development concepts with low-, base-, and high-price NPV values consistent with the model's recorded results.
 
@@ -365,43 +370,120 @@ Offshore_Field_Development_Economics_Intelligence/
 │   └── offshore_field_development_economics.db
 │
 ├── documentation/
+│   ├── base_case_assumptions.md
+│   ├── development_capex_schedule.csv
+│   ├── development_concept_specification.md
+│   ├── economic_assumptions.csv
+│   ├── operating_cost_assumptions.csv
+│   └── production_profile_assumptions.csv
 │
 ├── powerbi/
 │   └── Offshore_Field_Development_Economics_Intelligence.pbix
 │
 ├── python/
+│   ├── analytics/
+│   │   ├── build_annual_economic_model.py
+│   │   ├── build_oil_price_scenarios.py
+│   │   └── calculate_investment_metrics.py
 │   ├── generation/
+│   │   └── generate_production_profiles.py
 │   ├── preparation/
-│   └── validation/
-├── sql/
-├── presentation/
+│   │   ├── build_sqlite_database.py
+│   │   ├── create_sql_analytical_views.py
+│   │   └── inspect_database_schema.py
+│   ├── validation/
+│   │   ├── validate_assumptions.py
+│   │   ├── validate_production_profiles.py
+│   │   ├── validate_annual_economic_model.py
+│   │   ├── validate_investment_metrics.py
+│   │   ├── validate_oil_price_scenarios.py
+│   │   ├── validate_scenario_irr.py
+│   │   ├── validate_sql_analytical_views.py
+│   │   └── validate_sql_reconciliation.py
+│   └── run_pipeline.py
 │
-├── README.md
-└── LICENSE
+├── sql/
+│   └── 02_analytical_views.sql
+│
+├── presentation/
+├── requirements.txt
+├── .gitignore
+├── LICENSE
+└── README.md
 ```
 
-This is a high-level representation of the project's principal directories and artifacts. It is not intended to enumerate every file. The actual repository contents should be used as the authoritative reference for the current file structure.
-
----
+This is a representative listing of the principal tracked files, rather than an exhaustive inventory. Generated data and database files may be created locally during pipeline execution and are subject to the repository's existing `.gitignore` rules.
 
 ## 12. Reproducibility and Usage
 
-To inspect the project:
+The project includes an end-to-end Python pipeline orchestrator that runs the existing generation, analytical, preparation, and validation scripts in dependency order.
 
-1. Clone or download the repository.
-2. Review this README and the documented economic assumptions.
-3. Inspect the Python scripts and validation workflow.
-4. Open the SQLite database with a compatible SQLite client or Python's `sqlite3` module.
-5. Query the registered analytical views.
-6. Open the Power BI report in Power BI Desktop.
-7. Review the concept comparison, production forecast, economic scenarios, and development lifecycle pages.
-8. Run the applicable validation scripts after changing assumptions or calculations.
+### 12.1 Prerequisites
 
-A local Python installation and the project's required packages are necessary to execute the Python workflow. Power BI Desktop or a compatible Power BI environment is required to inspect the `.pbix` report.
+Install a compatible Python version and the packages listed in `requirements.txt`.
 
-The exact commands for reproducing the workflow should follow the scripts and dependencies actually present in the repository.
+Clone or download the repository and open a terminal in the project root.
 
----
+### 12.2 Install dependencies
+
+Run:
+
+```powershell
+py -m pip install -r requirements.txt
+```
+
+Use the Python environment intended for the project if multiple Python installations are present.
+
+### 12.3 Execute the complete pipeline
+
+From the project root, run:
+
+```powershell
+py python/run_pipeline.py
+```
+
+The orchestrator executes 14 steps in dependency order:
+
+1. Validate economic assumptions.
+2. Generate production profiles.
+3. Validate production profiles.
+4. Build the annual economic model.
+5. Validate the annual economic model.
+6. Calculate investment metrics and discounted cash flows.
+7. Validate investment metrics.
+8. Generate oil-price scenarios.
+9. Validate oil-price scenarios.
+10. Validate scenario IRR calculations.
+11. Build the SQLite database.
+12. Create SQL analytical views.
+13. Validate SQL analytical views.
+14. Validate SQL reconciliation.
+
+The pipeline stops when a step fails, reports the failing step and exit code, and returns a nonzero process exit code. Successful completion is reported only when every configured step succeeds.
+
+### 12.4 Inspect the outputs
+
+After successful execution, review the generated CSV files in `data/processed/` and the SQLite database at:
+
+`database/offshore_field_development_economics.db`
+
+The database contains the structured analytical data and registered SQL views used by downstream analysis.
+
+Open `powerbi/Offshore_Field_Development_Economics_Intelligence.pbix` in Power BI Desktop to inspect the executive report.
+
+### 12.5 Revalidation and controlled changes
+
+After changing assumptions, calculations, data-generation logic, or analytical views, rerun the pipeline and review its validation results.
+
+The pipeline orchestrates the existing scripts; it does not independently prove the correctness of every modeling assumption or every possible scenario. Numerical results remain conditional on the model's assumptions and implementation.
+
+Generated files and local databases are governed by the repository's existing `.gitignore` configuration. Follow that policy when reviewing and committing changes.
+
+### 12.6 Reproducibility evidence
+
+The recorded baseline comparison found nine of nine reference artifacts byte-for-byte identical after a pipeline run. The tested artifacts comprised seven CSV files, the SQL analytical-view definition file, and the SQLite database.
+
+This result establishes reproducibility for the tested baseline, software environment, and configuration. Identical results across other operating systems, Python versions, dependency versions, or environments have not been established.
 
 ## 13. Limitations and Appropriate Use
 
@@ -439,6 +521,7 @@ The principal portfolio deliverables are:
 * SQL-to-Python reconciliation and validation workflows.
 * Four-page Power BI executive report.
 * Project documentation and GitHub repository.
+* End-to-end Python pipeline orchestration with fail-fast behavior, regression validation, and documented baseline reproducibility checks.
 
 Further changes should be treated as controlled refinements and validated before being considered final.
 
