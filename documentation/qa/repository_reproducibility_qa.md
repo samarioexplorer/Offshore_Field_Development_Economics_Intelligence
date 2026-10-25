@@ -44,6 +44,22 @@ The closure is based on a successful rebuild in the current working environment;
 
 ## Outstanding administrative action
 
-Record the verification in the repository's QA documentation, review the final Git diff, and commit and push the approved documentation and Power BI changes.
+## Administrative Closure
 
-**Final technical disposition: PASS — CLOSED.**
+The verification record has been added to the repository.
+The approved documentation and Power BI deliverable were committed
+and pushed to the main branch.
+
+Commit: `f07496e`
+
+The local working tree was subsequently verified as clean.
+
+## Final Disposition
+
+Technical verification: PASS.
+Documentation and publication: COMPLETE.
+Finding 2: CLOSED.
+
+**Final technical disposition: PASS — CLOSED. **
+
+The successful pipeline execution and independent SQL validation support the technical closure. The verification was performed in the existing working environment; a clean-checkout rebuild was not performed.
