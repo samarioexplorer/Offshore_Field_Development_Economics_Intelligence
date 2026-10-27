@@ -1,4 +1,3 @@
-
 # Finding 2 — Database Publication and Repository Reproducibility
 
 **Disposition:** CLOSED — TECHNICAL PORTION
@@ -34,13 +33,65 @@ The execution validated source assumptions, generated production profiles, built
 
 The four primary source assumption files are tracked in Git. Generated CSV outputs and the SQLite database remain excluded under the repository's existing ignore rules. The Power BI file's existing local modification was preserved during pipeline execution.
 
-## Conclusion
+## Clean-Checkout Reproducibility Verification
 
-The technical verification passed. The pipeline successfully regenerated the analytical outputs and SQLite database, and independent validation confirmed database integrity, expected row counts, analytical-view consistency, and cross-layer reconciliation.
+### Objective
+
+Verify that the committed repository can regenerate its analytical outputs and SQLite database from a fresh Git checkout using an isolated Python environment.
+
+### Test environment
+
+* Operating system: Windows
+* Python version: 3.14.6
+* Repository source: Fresh clone of the GitHub `main` branch
+* Python environment: New repository-local virtual environment
+* Dependencies: Installed from `requirements.txt`
+* Pipeline command: `python python/run_pipeline.py`
+
+### Verification procedure
+
+1. Cloned the committed GitHub repository into a separate temporary directory.
+2. Confirmed that the fresh checkout had no uncommitted changes.
+3. Created a new Python virtual environment.
+4. Installed the dependencies specified in `requirements.txt`.
+5. Executed the pipeline without using the original working repository's generated outputs or SQLite database.
+6. Reviewed the pipeline execution and validation results.
+
+### Results
+
+The clean-checkout pipeline completed all 14 steps successfully in 21.33 seconds.
+
+| Validation                       |             Result |
+| -------------------------------- | -----------------: |
+| Assumption validation            |          81 passed |
+| Production profile validation    |          23 passed |
+| Annual economic model validation |          34 passed |
+| Investment metrics validation    |          17 passed |
+| Oil-price scenario validation    |          16 passed |
+| Scenario IRR diagnostics         |           9 passed |
+| SQLite integrity                 |             `ok` |
+| Analytical records loaded        |            408/408 |
+| SQL analytical view validation   |       15/15 passed |
+| Independent SQL reconciliation   |       10/10 passed |
+| End-to-end pipeline              | 14/14 steps passed |
+
+The pipeline regenerated the synthetic production profiles, annual economic model, investment metrics, oil-price scenario outputs, discounted cash-flow schedules, SQLite database, and six analytical SQL views.
+
+The independently calculated base-case NPV, IRR, payback, and breakeven metrics agreed with the project's established reference results.
+
+### Conclusion
+
+**Clean-checkout reproducibility: PASS.**
+
+The repository successfully regenerated its analytical outputs and SQLite database from a fresh checkout using a newly created Python virtual environment.
+
+This verification establishes reproducibility for the tested Python, CSV, SQLite, and SQL pipeline. It does not independently verify a clean rebuild of the Power BI semantic model or report.
+
+The economic outputs remain synthetic and illustrative, not actual asset forecasts or investment recommendations.
 
 The technical portion of Finding 2 is therefore closed.
 
-The closure is based on a successful rebuild in the current working environment; a clean-checkout reproducibility test has not been claimed.
+Initial verification was performed in the existing working environment. Subsequent clean-checkout testing confirmed that the committed repository can regenerate its analytical outputs in an isolated Python environment.
 
 ## Outstanding administrative action
 
