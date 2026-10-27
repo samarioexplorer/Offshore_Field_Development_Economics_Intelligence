@@ -145,22 +145,48 @@ The independent Python validation passed all nine checks. The dashboard was also
 
 ## 4. Slicer and Visual Interaction Requirements
 
-The Oil Price Scenario slicer must continue to control scenario-dependent financial visuals.
+The Oil Price Scenario slicer must control scenario-dependent financial visuals. Development Concept selections must update the relevant concept-specific KPIs and comparisons.
+
+The Base-Case Investment Returns table must retain its Base-scenario reference values independently of the selected oil-price scenario.
+
+The NPV comparison, oil-price sensitivity, and annual cash-flow visuals must retain their intended scenario-comparison behavior.
+
+### Regression Results
+
+| Check                                                     | Status |
+| --------------------------------------------------------- | ------ |
+| Base-case payback stability across Low, Base, and High    | PASS   |
+| Low-scenario multiple-IRR display                         | PASS   |
+| Base-scenario IRR display                                 | PASS   |
+| High-scenario IRR display                                 | PASS   |
+| Independent IRR validation                                | PASS   |
+| Corrected scenario-comparison visual                      | PASS   |
+| Oil-price scenario selection: Low, Base, and High         | PASS   |
+| Development concept selection and relevant KPI updates    | PASS   |
+| Annual cash-flow scenario and concept interactions        | PASS   |
+| Base-case KPI reconciliation against validated references | PASS   |
+| Restoration of expected default slicer state              | PASS   |
+
+The additional interaction checks were confirmed during manual Power BI regression testing. Numerical reference values were checked against the project's previously validated base-case outputs.
+
+These checks supplement the original regression results; they should not be interpreted as an independently executed automated test suite.
+
+### Regression Acceptance Criteria
+
+The report is considered to meet the tested interaction requirements when:
+
+* Each oil-price scenario displays the appropriate scenario-dependent results.
+* Development concept selections update the relevant KPIs.
+* The corrected scenario-comparison visual displays data.
+* Annual cash-flow visuals respond to the intended scenario and concept context.
+* Base-case reference metrics remain consistent with the validated economics calculations.
+* Restoring the default slicer selections returns the report to its expected state.
+
+**Result: PASS — all additional user-confirmed interaction checks passed**
 
 The Base-Case Investment Returns table must retain its Base-scenario values independently of the selected oil-price scenario.
 
 The NPV comparison and oil-price sensitivity visuals must retain their intended scenario-comparison behavior.
-
-### Regression status
-
-| Check                                  | Status               |
-| -------------------------------------- | -------------------- |
-| Base-case payback stability            | PASS                 |
-| Low-scenario multiple-IRR display      | PASS                 |
-| Base-scenario IRR display              | PASS                 |
-| High-scenario IRR display              | PASS                 |
-| Independent IRR validation             | PASS                 |
-| Full-page slicer and visual regression | Pending final review |
 
 ## 5. Data and Calculation Integrity
 
@@ -198,3 +224,11 @@ The scenario economics calculations, slicer interactions, investment metrics, vi
 The technical QA results support closure of the Power BI scenario economics validation.
 
 **Final QA Status: PASS — 10/10 regression checks passed.**
+
+### Additional Regression Evidence
+
+Subsequent manual regression checks confirmed the corrected scenario-comparison visual, scenario-dependent annual cash flows, development concept selection, base-case reference metrics, and restoration of the expected default report state.
+
+These results supplement the previously documented regression testing. The additional checks were confirmed manually and do not replace the independent Python, SQL, or DAX validation evidence.
+
+**Additional interaction checks: PASS — 8/8 user-confirmed checks.**
